@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <%- include("header") %>
+    <a href="/bbs/articles">全表示ページへ</a>
+    <h1>編集する</h1>
+    <article>
+      <div class="tab">
+        <div>
+          タイトル：
+          <input type="text" id="title" name="title" form="edit" value="<%= title %>" required>
+        </div>
+        <div>
+          作者：
+          <input type="text" id="author" name="author" form="edit" value="<%= author %>">
+        </div>
+        <div id="category-checkboxes">
+          カテゴリ：
+          <% categorys.forEach(c => { %>
+            <label style="display:block;">
+              <input type="checkbox" name="category[]" value="<%= c.name %>" form="edit">
+              <%= c.name %>
+            </label>
+          <% }) %>
+        </div>
+        <div>
+          <input
+            type="text"
+            id="new-category"
+            placeholder="カテゴリを追加"
+          >
+          <button type="button" onclick="addCategory()">追加</button>
+        </div>
+        <div>
+          内容：
+          <textarea id="body" id="bodyHTML" name="bodyHTML" form="edit"><%= bodyHTML %></textarea>
+        </div>
+      </div>
+      <div class="tab">
+        <% if(!edit){ %>
+          <div>
+            画像：
+            <input type="file" id="imageInput" accept="image/*">
+          </div>
+
+          <input type="hidden" name="pictureId" id="pictureId" form="edit">
+
+          <img id="preview" style="display:none; max-width:200px;">
+        <% }else if(!picture){ %>
+          <div>
+            画像：
+            <input type="file" id="imageInput" accept="image/*">
+          </div>
+          <input type="hidden" name="pictureId" id="pictureId" form="edit">
+          <img id="preview" style="display:none; max-width:200px;">
+        <% }else{ %>
+          <div>
+            画像：
+            <input type="file" id="imageInput" accept="image/*">
+          </div>
+          <% if (picture.length > 0) { %>
+            <input type="hidden" name="pictureId" id="pictureId" form="edit" value="<%= picture[0].id %>">
+            <img id="preview" style="width:80%; height: 80%;" src="<%= picture[0].address %>">
+          <% } else { %>
+            <input type="hidden" name="pictureId" id="pictureId" form="edit">
+            <img id="preview" style="display:none; max-width:400px;">
+          <% } %>
+        <% } %>
+      </div>
+    </article>
+    <% if(!edit){ %>
+      <form id="edit" action="/bbs/articles" method="post">
+        <button type="submit">作成</button>
+      </form>
+    <% }else{ %>
+      <form id="edit" action="/bbs/articles/<%= id %>?method=patch" method="post">
+        <button type="submit" class="bbsbutton" id="patch">編集</button>
+      </form>
+      <form id="delete" action="/bbs/articles/<%= id %>?method=delete" method="post">
+        <button type="submit" class="bbsbutton" id="del">削除</button>
+      </form>
+    <% } %>
+    
+    <%- include("footer") %>
+    
+    <script src="../forupl.js"></script>
+    <script src="../category.js"></script>
+  </body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Excel Upload</title>
+    <link rel="stylesheet" href="/css/header.css">
+    <link rel="stylesheet" href="/css/button.css">
+    <link rel="stylesheet" href="/css/mainpage.css">
+    <style>
+      tr{
+        white-space: pre-wrap;
+      }
+      .row{
+        display: flex;    
+        gap: 24px;
+        align-items: center;
+      }
+      .right{
+        margin: auto;
+        text-align: right;
+      }
+      .file-row {
+        text-align: right;
+      }
+
+      .btn-row {
+        text-align: right;
+        margin-top: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <%- include("header") %>
+    <h1>Excel データ簡単管理</h1>
+    <div class="row">
+      <div>
+        <form id="ret" action="/mexeasy/lab" method="post">
+          <button type="submit">
+            選んだ作業を実行する
+          </button>
+        </form>
+        <label>
+          <input type="radio" name="do" value="sort" form="ret" checked>小さい順に並べ替える
+        </label>
+        <label>
+          <input type="radio" name="do" value="small" form="ret">まとめる
+        </label>
+      </div>
+      <div class="right">
+        <form id="download" action="/mexeasy/download" method="post">
+          <div class="file-row">
+            ファイル名：<input type="text" name="filename" required>.xlsx
+          </div>
+          <button type="submit" class="btn-row">
+            ダウンロード
+          </button>
+        </form>
+      </div>
+    </div>
+    <table border="1" style="border-collapse: collapse;">
+      <thead>
+        <% if (data && data.length > 0) { %>
+          <% Object.keys(data[0]).forEach((key, i) => { %>
+            <th style="padding:6px;">
+              <label style="display: inline-flex; align-items: center; line-height: 1; padding: 0; margin-right: 12px; cursor: pointer;">
+                <input type="radio" name="col" value="<%= i %>" form="ret" 
+                <% if (i === 0){ %>
+                  checked
+                <% } %>
+                >↓の列
+              </label>
+            </th>
+          <% }) %>
+        <% } %>
+      </thead>
+      <tr>
+        <% if (data && data.length > 0) { %>
+          <% Object.keys(data[0]).forEach(key => { %>
+            <th style="padding:12px;"><%= key %></th>
+          <% }) %>
+        <% } %>
+      </tr>
+
+      <tbody>
+        <% data.forEach(row => { %>
+          <tr>
+            <% Object.values(row).forEach(value => { %>
+              <td style="padding:6px;"><%= value %></td>
+            <% }) %>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <%- include("footer") %>
+  </body>
+</html>

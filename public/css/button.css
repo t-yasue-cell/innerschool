@@ -1,0 +1,225 @@
+.titlebutton {
+  width: 216px;
+  height: 216px;
+
+  border: 1px solid #ddd;
+  border-radius: 4px;   /* ← 少し角丸、0 にすれば完全な□ */
+  background: #fff;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4;           /* 余白を消す */
+  cursor: pointer;
+
+  font-family:
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  "Noto Sans JP",
+  "Meiryo",
+  sans-serif;
+
+  font-size: 28px;
+}
+#math {
+  background-color: aliceblue;
+  border-color: #bcd;
+  border-radius: 6px;
+
+  /* サイズ系は触らない */
+  /* padding: 0; ← 明示したいならこれ */
+  /* font-size は .titlebutton 側を使う */
+
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+/* hover */
+#math:hover {
+  background-color: #dceeff;
+}
+
+/* active */
+#math:active {
+  background-color: #c7e2ff;
+  transform: translateY(1px);
+}
+
+/* focus（キーボード） */
+#math:focus-visible {
+  outline: 2px solid #6aa9ff;
+  outline-offset: 2px;
+}
+
+/* disabled */
+#math:disabled {
+  background-color: #f2f7fc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#class {
+  background-color: #fff3e0;   /* 薄いオレンジ */
+  border-color: #f0b27a;
+
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+/* hover */
+#class:hover {
+  background-color: #ffe0b2;
+}
+
+/* active */
+#class:active {
+  background-color: #ffcc80;
+  transform: translateY(1px);
+}
+
+/* focus */
+#class:focus-visible {
+  outline: 2px solid #fb8c00;
+  outline-offset: 2px;
+}
+
+/* disabled */
+#class:disabled {
+  background-color: #fff7ed;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#work {
+  background-color: #e8f5e9;   /* 薄いグリーン */
+  border-color: #81c784;
+
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+/* hover */
+#work:hover {
+  background-color: #c8e6c9;
+}
+
+/* active */
+#work:active {
+  background-color: #a5d6a7;
+  transform: translateY(1px);
+}
+
+/* focus */
+#work:focus-visible {
+  outline: 2px solid #43a047;
+  outline-offset: 2px;
+}
+
+/* disabled */
+#work:disabled {
+  background-color: #f1f8f4;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bbsbutton {
+  width: 54px;
+  height: 36px;
+
+  border: 1px solid #ddd;
+  border-radius: 4px;   /* ← 少し角丸、0 にすれば完全な□ */
+  background: #fff;
+
+  padding: 4;           /* 余白を消す */
+  cursor: pointer;
+
+  font-family:
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  "Noto Sans JP",
+  "Meiryo",
+  sans-serif;
+
+  font-size: 14px;
+}
+
+#patch {
+  background-color: #e8f5e9;   /* 薄いグリーン */
+  border-color: #81c784;
+
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+/* active */
+#patch:active {
+  background-color: #a5d6a7;
+  transform: translateY(1px);
+}
+
+/* focus */
+#patch:focus-visible {
+  outline: 2px solid #43a047;
+  outline-offset: 2px;
+}
+
+/* disabled */
+#patch:disabled {
+  background-color: #f1f8f4;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+#del {
+  background-color: aliceblue;
+  border-color: #bcd;
+  border-radius: 6px;
+
+  /* サイズ系は触らない */
+  /* padding: 0; ← 明示したいならこれ */
+  /* font-size は .titlebutton 側を使う */
+
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+/* hover */
+#del:hover {
+  background-color: #dceeff;
+}
+
+/* active */
+#del:active {
+  background-color: #c7e2ff;
+  transform: translateY(1px);
+}
+
+/* focus（キーボード） */
+#del:focus-visible {
+  outline: 2px solid #6aa9ff;
+  outline-offset: 2px;
+}
+
+/* disabled */
+#del:disabled {
+  background-color: #f2f7fc;
+  color: #999;
+  cursor: not-allowed;
+  transform: none;
+}

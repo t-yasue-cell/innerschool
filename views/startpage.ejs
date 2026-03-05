@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <%- include("header") %>
+    <h1>スタートメニュー</h1>
+    <div class="start">
+      <div class="break"></div>
+      <% if (!check) { %>
+      <errormessage style="color: red">パスワード認証できていないので機能を制限しています。</errormessage>
+      <form action="/auth" method="get">
+        <button type="submit">認証する</button>
+      </form>
+      <div class="break"></div>
+      <% } else {%>
+      <form action="/bbs/articles" method="get">
+        <button type="submit" class="titlebutton" id="work">マニュアル</button>
+      </form>
+      <form action="/tools/random_with_excel/" method="get">
+        <button type="submit" class="titlebutton" id="class">ランダム指名</button>
+      </form>
+      <% } %>
+      <form action="/mexeasy" method="get">
+        <button type="submit" class="titlebutton" id="work">excel作業アプリ</button>
+      </form>
+      <form action="/tools/2dfiguremaker/" method="get">
+        <button type="submit" class="titlebutton" id="math">2d図形描画</button>
+      </form>
+      <form action="/tools/3dfiguremaker/" method="get">
+        <button type="submit" class="titlebutton" id="math">3d図形描画</button>
+      </form>
+    </div>
+    <%- include("footer") %>
+  </body>
+</html>

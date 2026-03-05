@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <%- include("header") %>
+    <a href="/bbs/articles">全表示ページへ</a>
+    <h1><%= article.title %></h1>
+    <article>
+      <div class="tab">
+        <h2>カテゴリ：
+          <% categorys.forEach(category => { %>
+            ・<%= category.name %>
+          <% }) %> 
+        </h2>
+        <h2>作者:<%= article.author %></h2>
+        <div>
+          <%= article.bodyHTML %>
+        </div>
+      </div>
+      <div class="tab">
+        <% article.pictures.forEach(picture => { %>
+          <div>
+            <img src="<%= picture.address %>" alt="<%= picture.name %>" style="width: 80%; height: 80%;">
+          </div>
+        <% }) %>
+        </div>
+    </article>
+    <div>
+      <form id="edit" action="/bbs/editor" method="get">
+        <input type="hidden" name="id" value="<%= article.id %>">
+        <button type="submit" class="bbsbutton" id="patch">編集</button>
+      </form>
+    </div>
+    <div>
+      <form id="delete" action="/bbs/articles/<%= article.id %>?method=delete" method="post">
+        <button type="submit" class="bbsbutton" id="del">削除</button>
+      </form>
+    </div>
+    <%- include("footer") %>
+  </body>
+</html>

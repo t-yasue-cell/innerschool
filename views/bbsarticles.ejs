@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <articles>
+      <%- include("header") %>
+      <a href="./editor">作成ページへ</a>
+
+      <h1>マニュアル一覧</h1>
+      <% if(pagetitle !=="Home"){ %>
+        <h2>カテゴリ：<%= pagetitle %></h2>
+      <% } %>
+      <a href="./categorys">カテゴリ検索ページへ</a>
+
+      <% if(articles.length === 0){ %>
+        まだデータがありません
+      <% } else { %>
+
+        <table border="1" cellpadding="8">
+            <thead>
+            <tr>
+                <th>タイトル</th>
+                <th>作者</th>
+                <th>作成日</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <% articles.forEach(article => { %>
+                <tr>
+                <td><a href="/bbs/articles/<%= article.id %>"><%= article.title %></a></td>
+                <td><%= article.author %></td>
+                <td><%= article.createdAt.toLocaleString() %></td>
+                </tr>
+            <% }) %>
+            </tbody>
+        </table>
+      <% } %>
+      <%- include("footer") %>
+    </articles>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <%- include("header") %>
+    <a href="/bbs/articles">全探索ページへ</a>
+    <table border="1" cellpadding="8">
+      <thead>
+        <tr>
+          <th>カテゴリ</th>
+          <th>削除是非</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><a href="/bbs/articles?category=0">カテゴリ無し</a></td></tr>
+        <% categorys.forEach(category => { %>
+          <tr>
+            <td><a href="/bbs/articles?category=<%= category.id %>"><%= category.name %></a></td>
+            <td>
+              <form action="/bbs/categorys/<%= category.id %>?method=delete" method="post">
+                <button type="submit">削除</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <%- include("footer") %>
+  </body>
+</html>

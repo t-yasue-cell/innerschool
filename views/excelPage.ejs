@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <%- include("header") %>
+  <body>
+    <h1><%= title %></h1>
+    <% if(title==="excel作業簡易化"){ %>
+      <form id="uploadForm" action="/mexeasy" method="POST" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" hidden>
+      </form>
+    <% }else if(title==="提出物管理"){ %>
+      <form id="uploadForm" action="/managehomework" method="POST" enctype="multipart/form-data">
+        <input type="file" id="fileInput" name="file" hidden>
+      </form>
+    <% } %>
+
+    <div id="dropArea" style="width:540px;height:450px;border:2px dashed #333;">
+      <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size: 200%;">
+        ここにExcelをドロップ
+      </div>
+    </div>
+    <%- include("footer") %>
+
+    <script src="upload.js"></script>
+  </body>
+</html>

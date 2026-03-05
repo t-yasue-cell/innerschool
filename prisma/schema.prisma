@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Article {
+  id         Int               @id @default(autoincrement())
+  title      String
+  bodyHTML   String
+  author     String
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  categories ArticleCategory[]
+  pictures   Picture[]
+}
+
+model Picture {
+  id        Int      @id @default(autoincrement())
+  name      String
+  articleId Int?
+  address   String
+  isUsed    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  article   Article? @relation(fields: [articleId], references: [id])
+}
+
+model Category {
+  id       Int               @id @default(autoincrement())
+  name     String            @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  articles ArticleCategory[]
+}
+
+model ArticleCategory {
+  articleId  Int
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  article    Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, categoryId])
+}
