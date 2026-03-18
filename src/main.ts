@@ -35,6 +35,6 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
-  await app.listen(process.env.PORT ?? 3000 ,'0.0.0.0'); // イントラネットに移すとき、このコメントアウトを外してlocalhostじゃなくする必要ある
+  await app.listen(/*process.env.PORT ??*/ 3000 ,'0.0.0.0'); // イントラネットに移すとき、このコメントアウトを外してlocalhostじゃなくする必要ある
 }
 bootstrap();
