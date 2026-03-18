@@ -10,9 +10,9 @@ import session from "express-session";
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
-    AppModule /*{
+    AppModule, {
     logger: false, // ← これでNestLoggerを無効化(本番環境のみ削除)
-  }*/,
+    },
   );
   app.enableCors({
     origin: '*', // 必要に応じてアクセス可能なオリジンに限定
@@ -35,6 +35,6 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
-  await app.listen(process.env.PORT ?? 3000 /* ,'0.0.0.0'*/); // イントラネットに移すとき、このコメントアウトを外してlocalhostじゃなくする必要ある
+  await app.listen(process.env.PORT ?? 3000 ,'0.0.0.0'); // イントラネットに移すとき、このコメントアウトを外してlocalhostじゃなくする必要ある
 }
 bootstrap();
