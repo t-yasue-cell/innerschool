@@ -18,7 +18,7 @@ async function bootstrap() {
     origin: '*', // 必要に応じてアクセス可能なオリジンに限定
     credentials: true, // Cookie を送信する場合は true
   });
-  // app.use('/tools/random_with_excel/StreamingAssets', express.static(join(__dirname, '..', 'public/StreamingAssets')));
+  app.use('/tools/random_with_excel/StreamingAssets', express.static(join(__dirname, '..', 'public/StreamingAssets')));
   app.setBaseViewsDir(join(process.cwd(), 'views'));
   app.use(
     '/uploads',
