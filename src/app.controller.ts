@@ -44,7 +44,7 @@ export class AppController {
   }
 
   @Get('/tools/random_with_excel/*')
-  @UseGuards(PasswordGuardHard)
+  // @UseGuards(PasswordGuardHard) 不便なので
   securepageran(@Res() res: Response, @Req() req: Request) {
     const relativePath =
       req.path.replace(/^\/tools\/random_with_excel\/?/, '') || 'index.html';
