@@ -11,8 +11,6 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { MexeasyController } from './mexeasy/mexeasy.controller';
 import { MexeasyService } from './mexeasy/mexeasy.service';
-import { ManagehomeworkController } from './managehomework/managehomework.controller';
-import { ManagehomeworkService } from './managehomework/managehomework.service';
 import { BbsModule } from './bbs/bbs.module';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
@@ -31,8 +29,8 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
   ],
-  controllers: [AppController, AuthController, MexeasyController, ManagehomeworkController],
-  providers: [/* GoogleStrategy, */ AppService, AuthService, MexeasyService, ManagehomeworkService, PrismaService],
+  controllers: [AppController, AuthController, MexeasyController],
+  providers: [/* GoogleStrategy, */ AppService, AuthService, MexeasyService, PrismaService],
   exports: [PrismaService]
 })
 export class AppModule {}
