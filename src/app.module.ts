@@ -14,6 +14,9 @@ import { MexeasyService } from './mexeasy/mexeasy.service';
 import { BbsModule } from './bbs/bbs.module';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
+import { TextuploaderController } from './textuploader/textuploader.controller';
+import { TextuploaderService } from './textuploader/textuploader.service';
+import { TextuploaderModule } from './textuploader/textuploader.module';
 
 @Global()
 @Module({
@@ -27,10 +30,10 @@ import { ConfigModule } from '@nestjs/config';
     BbsModule,    
     ConfigModule.forRoot({
       isGlobal: true,
-    }),
+    }), TextuploaderModule,
   ],
-  controllers: [AppController, AuthController, MexeasyController],
-  providers: [/* GoogleStrategy, */ AppService, AuthService, MexeasyService, PrismaService],
+  controllers: [AppController, AuthController, MexeasyController, TextuploaderController],
+  providers: [/* GoogleStrategy, */ AppService, AuthService, MexeasyService, PrismaService, TextuploaderService],
   exports: [PrismaService]
 })
 export class AppModule {}
