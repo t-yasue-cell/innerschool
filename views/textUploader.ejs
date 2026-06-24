@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <%- include("head") %>
+  <body>
+    <%- include("header") %>
+
+    <main class="uploader-main">
+      <h1 class="uploader-title">ファイルアップロード</h1>
+
+      <div class="uploader-card">
+
+        <div id="drop-area" class="drop-area">
+          <p>ここにファイルをドロップ</p>
+          <p class="drop-area__sub">対応形式：.pdf / .img / .jpg / .png / .docx</p>
+          <input type="file" id="file-input" accept=".pdf,.img,.jpg,.png,.docx" style="display:none">
+        </div>
+
+        <div id="preview-area" class="preview-area" style="display:none">
+          <p id="preview-filename" class="preview-filename"></p>
+          <img id="preview-img" style="display:none" alt="プレビュー">
+          <canvas id="preview-pdf" style="display:none"></canvas>
+          <div id="preview-docx" style="display:none"></div>
+        </div>
+
+        <input type="password" id="password" class="form-input" placeholder="パスワード">
+        <button id="upload-btn" class="upload-btn" disabled>追加</button>
+        <p id="status" class="status-msg"></p>
+
+      </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+
+    <script>
+      const PASSWORD = 'kj1904';
+      const ALLOWED  = ['.pdf', '.img', '.jpg', '.png', '.docx'];
+
+      const $ = id => document.getElementById(id);
+      const dropArea   = $('drop-area');
+      const fileInput  = $('file-input');
+      const passwordEl = $('password');
+      const uploadBtn  = $('upload-btn');
+      const statusEl   = $('status');
+
+      let selectedFile = null;
+
+      // ドラッグ&ドロップ
+      dropArea.addEventListener('dragover', e => { e.preventDefault(); dropArea.classList.add('drag-over'); });
+      dropArea.addEventListener('dragleave', () => dropArea.classList.remove('drag-over'));
+      dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
+      dropArea.addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+      passwordEl.addEventListener('input', checkReady);
+
+      function getExt(name) { return name.slice(name.lastIndexOf('.')).toLowerCase(); }
+
+      async function handleFile(file) {
+        if (!file) return;
+        if (!ALLOWED.includes(getExt(file.name))) { statusEl.textContent = '❌ 許可されていない拡張子です'; return; }
+
+        selectedFile = file;
+        statusEl.textContent = '';
+        $('preview-filename').textContent = file.name;
+        ['preview-img', 'preview-pdf', 'preview-docx'].forEach(id => {
+          const el = $(id); el.style.display = 'none';
+          if (el.tagName === 'DIV') el.innerHTML = '';
+        });
+        $('preview-area').style.display = 'block';
+
+        const ext = getExt(file.name);
+        const buf = await file.arrayBuffer();
+
+        if (['.img', '.jpg', '.png'].includes(ext)) {
+          const img = $('preview-img');
+          img.src = URL.createObjectURL(file);
+          img.style.display = 'block';
+        } else if (ext === '.pdf') {
+          pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+          const page = await (await pdfjsLib.getDocument({ data: buf }).promise).getPage(1);
+          const vp = page.getViewport({ scale: 1.2 });
+          const canvas = $('preview-pdf');
+          canvas.width = vp.width; canvas.height = vp.height;
+          await page.render({ canvasContext: canvas.getContext('2d'), viewport: vp }).promise;
+          canvas.style.display = 'block';
+        } else if (ext === '.docx') {
+          const el = $('preview-docx');
+          el.innerHTML = (await mammoth.convertToHtml({ arrayBuffer: buf })).value;
+          el.style.display = 'block';
+        }
+
+        checkReady();
+      }
+
+      function checkReady() {
+        uploadBtn.disabled = !(selectedFile && passwordEl.value === PASSWORD);
+      }
+
+      uploadBtn.addEventListener('click', async () => {
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        statusEl.textContent = '送信中...';
+        uploadBtn.disabled = true;
+        try {
+          const res  = await fetch('/text-uploader', { method: 'POST', body: formData });
+          const json = await res.json();
+          statusEl.textContent = res.ok ? `✅ ${json.message}` : `❌ ${json.message}`;
+          if (res.ok) { selectedFile = null; $('preview-area').style.display = 'none'; passwordEl.value = ''; }
+        } catch {
+          statusEl.textContent = '❌ 通信エラー';
+        } finally {
+          if (!statusEl.textContent.startsWith('✅')) uploadBtn.disabled = false;
+        }
+      });
+    </script>
+
+    <style>
+      .uploader-main  { max-width: 600px; margin: 40px auto; padding: 0 16px; }
+      .uploader-title { font-size: 1.4rem; margin-bottom: 24px; }
+      .uploader-card  { border: 1px solid #e0e0e0; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 16px; }
+
+      .drop-area      { border: 2px dashed #aaa; border-radius: 8px; padding: 48px 24px; text-align: center; color: #888; cursor: pointer; transition: background .2s, border-color .2s; }
+      .drop-area.drag-over { background: #f0f7ff; border-color: #4a90e2; }
+      .drop-area__sub { font-size: .8em; margin-top: 8px; }
+
+      .preview-area    { padding: 12px; background: #f9f9f9; border-radius: 8px; }
+      .preview-filename{ font-size: .85em; color: #555; margin-bottom: 8px; }
+      #preview-img     { max-width: 100%; max-height: 280px; border-radius: 4px; }
+      #preview-pdf     { max-width: 100%; border: 1px solid #ddd; }
+      #preview-docx    { max-height: 280px; overflow-y: auto; font-size: .85em; line-height: 1.6; }
+
+      .form-input  { width: 100%; padding: 8px 12px; border: 1px solid #ccc; border-radius: 6px; font-size: 1em; box-sizing: border-box; }
+
+      .upload-btn  { width: 100%; padding: 12px; background: #4a90e2; color: #fff; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: background .2s; }
+      .upload-btn:hover:not(:disabled) { background: #357abd; }
+      .upload-btn:disabled { background: #b0c4de; cursor: not-allowed; }
+
+      .status-msg  { text-align: center; font-size: .9em; margin: 0; }
+    </style>
+
+  </body>
+</html>

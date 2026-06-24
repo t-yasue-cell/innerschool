@@ -11,11 +11,12 @@ import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { MexeasyController } from './mexeasy/mexeasy.controller';
 import { MexeasyService } from './mexeasy/mexeasy.service';
-import { ManagehomeworkController } from './managehomework/managehomework.controller';
-import { ManagehomeworkService } from './managehomework/managehomework.service';
 import { BbsModule } from './bbs/bbs.module';
 import { PrismaService } from './prisma.service';
 import { ConfigModule } from '@nestjs/config';
+import { TextuploaderController } from './textuploader/textuploader.controller';
+import { TextuploaderService } from './textuploader/textuploader.service';
+import { TextuploaderModule } from './textuploader/textuploader.module';
 
 @Global()
 @Module({
@@ -29,10 +30,10 @@ import { ConfigModule } from '@nestjs/config';
     BbsModule,    
     ConfigModule.forRoot({
       isGlobal: true,
-    }),
+    }), TextuploaderModule,
   ],
-  controllers: [AppController, AuthController, MexeasyController, ManagehomeworkController],
-  providers: [/* GoogleStrategy, */ AppService, AuthService, MexeasyService, ManagehomeworkService, PrismaService],
+  controllers: [AppController, AuthController, MexeasyController, TextuploaderController],
+  providers: [/* GoogleStrategy, */ AppService, AuthService, MexeasyService, PrismaService, TextuploaderService],
   exports: [PrismaService]
 })
 export class AppModule {}
