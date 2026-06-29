@@ -40,7 +40,8 @@ export class TextuploaderController {
   ) {
     if (!file) throw new BadRequestException('ファイルがありません');
 
-    const savedPath = await this.textUploaderService.saveFile(file);
+    const BASE_URL = 'http://172.16.10.3';
+    const savedPath = (await this.textUploaderService.saveFile(file)).replace('/var/www', BASE_URL);
     return res.json({ message: '保存完了', path: savedPath });
   }
 }
