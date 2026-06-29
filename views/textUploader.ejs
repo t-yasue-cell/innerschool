@@ -22,7 +22,6 @@
           <div id="preview-docx" style="display:none"></div>
         </div>
 
-        <input type="password" id="password" class="form-input" placeholder="パスワード">
         <button id="upload-btn" class="upload-btn" disabled>追加</button>
         <p id="status" class="status-msg"></p>
 
@@ -33,13 +32,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 
     <script>
-      const PASSWORD = 'kj1904';
       const ALLOWED  = ['.pdf', '.img', '.jpg', '.png', '.docx'];
 
       const $ = id => document.getElementById(id);
       const dropArea   = $('drop-area');
       const fileInput  = $('file-input');
-      const passwordEl = $('password');
       const uploadBtn  = $('upload-btn');
       const statusEl   = $('status');
 
@@ -51,7 +48,6 @@
       dropArea.addEventListener('drop', e => { e.preventDefault(); dropArea.classList.remove('drag-over'); handleFile(e.dataTransfer.files[0]); });
       dropArea.addEventListener('click', () => fileInput.click());
       fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
-      passwordEl.addEventListener('input', checkReady);
 
       function getExt(name) { return name.slice(name.lastIndexOf('.')).toLowerCase(); }
 
@@ -93,7 +89,7 @@
       }
 
       function checkReady() {
-        uploadBtn.disabled = !(selectedFile && passwordEl.value === PASSWORD);
+        uploadBtn.disabled = !(selectedFile);
       }
 
       uploadBtn.addEventListener('click', async () => {
@@ -104,8 +100,8 @@
         try {
           const res  = await fetch('/text-uploader', { method: 'POST', body: formData });
           const json = await res.json();
-          statusEl.textContent = res.ok ? `✅ ${json.message}` : `❌ ${json.message}`;
-          if (res.ok) { selectedFile = null; $('preview-area').style.display = 'none'; passwordEl.value = ''; }
+          statusEl.textContent = res.ok ? `✅ ${json.message}\nURL:${json.path}` : `❌ ${json.message}`;
+          if (res.ok) { selectedFile = null; $('preview-area').style.display = 'none';}
         } catch {
           statusEl.textContent = '❌ 通信エラー';
         } finally {
