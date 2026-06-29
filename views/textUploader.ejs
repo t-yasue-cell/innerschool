@@ -8,7 +8,8 @@
       <h1 class="uploader-title">ファイルアップロード</h1>
 
       <div class="uploader-card">
-
+        <p id="status" class="status-msg"></p>
+        <p id="status-msg" class="status-msg"></p>
         <div id="drop-area" class="drop-area">
           <p>ここにファイルをドロップ</p>
           <p class="drop-area__sub">対応形式：.pdf / .img / .jpg / .png / .docx</p>
@@ -23,7 +24,6 @@
         </div>
 
         <button id="upload-btn" class="upload-btn" disabled>追加</button>
-        <p id="status" class="status-msg"></p>
 
       </div>
     </main>
@@ -39,6 +39,7 @@
       const fileInput  = $('file-input');
       const uploadBtn  = $('upload-btn');
       const statusEl   = $('status');
+      const statusMsg   = $('status-msg')
 
       let selectedFile = null;
 
@@ -100,7 +101,8 @@
         try {
           const res  = await fetch('/text-uploader', { method: 'POST', body: formData });
           const json = await res.json();
-          statusEl.textContent = res.ok ? `✅ ${json.message}\nURL:${json.path}` : `❌ ${json.message}`;
+          statusEl.textContent = res.ok ? `✅ ${json.message}` : `❌ ${json.message}`;
+          statusMsg.textContent = res.ok ? `ボタン用URL→${json.path}` : "";
           if (res.ok) { selectedFile = null; $('preview-area').style.display = 'none';}
         } catch {
           statusEl.textContent = '❌ 通信エラー';
