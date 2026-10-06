@@ -6,7 +6,7 @@ services:
     environment:
       DATABASE_URL: "${DATABASE_URL}"
     volumes:
-      - sqlite_data:./
+      - sqlite_data: /app/dev.db
     restart: unless-stopped
  
 volumes:

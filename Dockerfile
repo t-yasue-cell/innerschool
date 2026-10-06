@@ -1,6 +1,6 @@
 FROM node:22-slim
 RUN apt-get update && apt-get install -y openssl
-WORKDIR /
+WORKDIR /app
 COPY package*.json ./
 COPY prisma ./prisma/
 RUN npm install
