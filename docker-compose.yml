@@ -4,10 +4,10 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}?schema=public
-    depends_on:
-      db:
-        condition: service_healthy
+      DATABASE_URL: "file:./data/${DATABASE_URL}"
+    volumes:
+      - sqlite_data:/app/data
+    restart: unless-stopped
  
 volumes:
   sqlite_data:
