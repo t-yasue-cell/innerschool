@@ -9,3 +9,5 @@ services:
       db:
         condition: service_healthy
  
+volumes:
+  sqlite_data:
