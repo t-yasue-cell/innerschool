@@ -4,7 +4,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: "file:./data/${DATABASE_URL}"
+      DATABASE_URL: "${DATABASE_URL}"
     volumes:
       - sqlite_data:/app/data
     restart: unless-stopped
