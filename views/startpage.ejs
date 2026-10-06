@@ -23,6 +23,13 @@
       <form action="/mexeasy" method="get">
         <button type="submit" class="titlebutton" id="work">excel作業アプリ</button>
       </form>
+      <form id="workForm" method="get">
+        <button type="submit" class="titlebutton" id="work">Todoアプリを開く</button>
+      </form>
+      <script>
+        document.getElementById('workForm').action =
+          `${location.protocol}//${location.hostname}:3001/`;
+      </script>
       <form action="/text-uploader" method="get">
         <button type="submit" class="titlebutton" id="work">学校サイトにアップロードする</button>
       </form>
